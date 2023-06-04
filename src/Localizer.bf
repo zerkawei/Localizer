@@ -1,6 +1,7 @@
 using System.Collections;
 using System;
 using Bon;
+using Bon.Integrated;
 using internal Localizer;
 namespace Localizer;
 
@@ -65,4 +66,21 @@ public struct LocalizedText : IDisposable
 
 	public this(String key) { Key = key; }
 	public void Dispose() { if(!Key.HasExternalPtr) { delete Key; } }
+}
+
+public static
+{
+	public static void LocalizedTextSerialize(BonWriter writer, ValueView val, BonEnvironment env, SerializeValueState state)
+	{
+		let dbr = *(LocalizedText*)val.dataPtr;
+		writer.String(dbr.Key);
+	}
+
+	public static Result<void> LocalizedTextDeserialize(BonReader reader, ValueView val, BonEnvironment env, DeserializeValueState state)
+	{
+		var str = (*(LocalizedText*)val.dataPtr).Key = new .();
+
+		Deserialize.String!(reader, ref str, env);
+		return .Ok;
+	}
 }
