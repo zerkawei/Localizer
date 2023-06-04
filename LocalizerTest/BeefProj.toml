@@ -1,0 +1,6 @@
+FileVersion = 1
+Dependencies = {corlib = "*", Localizer = "*"}
+
+[Project]
+Name = "LocalizerTest"
+StartupObject = "LocalizerTest.Program"

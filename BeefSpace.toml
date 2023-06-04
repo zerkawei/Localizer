@@ -1,0 +1,5 @@
+FileVersion = 1
+Projects = {Localizer = {Path = "."}, bon = "*", LocalizerTest = {Path = "LocalizerTest"}}
+
+[Workspace]
+StartupProject = "LocalizerTest"

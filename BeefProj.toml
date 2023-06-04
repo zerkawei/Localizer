@@ -1,0 +1,7 @@
+FileVersion = 1
+Dependencies = {corlib = "*", bon = "*"}
+
+[Project]
+Name = "Localizer"
+TargetType = "BeefLib"
+StartupObject = "Localizer.Program"
