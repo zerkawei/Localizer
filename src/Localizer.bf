@@ -1,7 +1,8 @@
-using System.Collections;
 using System;
+using System.Collections;
 using Bon;
 using Bon.Integrated;
+
 using internal Localizer;
 namespace Localizer;
 
@@ -15,38 +16,38 @@ public static class Localizer
 		languages = new .();
 	}
 
-	public static void LoadLanguage(StringView path)
+	public static Result<void> LoadLanguage(StringView path)
 	{
 		var lang = new Language();
-		Bon.DeserializeFromFile(ref lang, path);
-		languages.Add(lang.Locale, lang);
-		if(current == null)
-		{
-			current = lang;
-		}
+		Try!(Bon.DeserializeFromFile(ref lang, path));
+		languages.Add(lang.[Friend]tag, lang);
+		if(current == null) current = lang;
+		return .Ok;
 	}
 
-	public static void SetLanguage(StringView locale)
+	public static void RemoveLanguage(String tag)
 	{
-		current = languages.GetValueOrDefault(locale.ToString(.. scope .()));
+		let lang = languages.GetValueOrDefault(tag);
+		if(lang == current) current = null;
+		languages.Remove(tag);
+		if(lang != null) delete lang;
+	}
+
+	public static void SetLanguage(String tag)
+	{
+		current = languages.GetValueOrDefault(tag);
 	}
 }
 
 [BonTarget]
 public sealed class Language
 {
-	[BonInclude] private String locale   ~ delete _;
+	[BonInclude] private String                    tag  ~ delete _;
 	[BonInclude] private Dictionary<String,String> strings ~ DeleteDictionaryAndKeysAndValues!(_);
 
-	public String Locale                      { get => locale; }
-	public Dictionary<String, String> Strings { get => strings; }
+	public StringView Tag { [Inline] get => .(tag); }
 
 	internal this() {}
-	public this(String locale)
-	{
-		this.locale  = locale;
-		this.strings = new .();
-	}
 }
 
 [BonTarget]
@@ -65,7 +66,14 @@ public struct LocalizedText : IDisposable
 	}
 
 	public this(String key) { Key = key; }
+
 	public void Dispose() { if(!Key.HasExternalPtr) { delete Key; } }
+
+	public override void ToString(String strBuffer)
+	{
+		strBuffer.Clear();
+		strBuffer.Append(String);
+	}
 }
 
 public static
@@ -79,7 +87,6 @@ public static
 	public static Result<void> LocalizedTextDeserialize(BonReader reader, ValueView val, BonEnvironment env, DeserializeValueState state)
 	{
 		var str = (*(LocalizedText*)val.dataPtr).Key = new .();
-
 		Deserialize.String!(reader, ref str, env);
 		return .Ok;
 	}
