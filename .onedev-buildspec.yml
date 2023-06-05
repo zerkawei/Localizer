@@ -1,0 +1,19 @@
+version: 21
+jobs:
+- name: PushToMirror
+  steps:
+  - !PushRepository
+    name: push
+    remoteUrl: https://github.com/zerkawei/Localizer.git
+    passwordSecret: access-token
+    force: false
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  triggers:
+  - !BranchUpdateTrigger
+    projects: Localizer
+  - !TagCreateTrigger
+    projects: Localizer
+  retryCondition: never
+  maxRetries: 3
+  retryDelay: 30
+  timeout: 3600
