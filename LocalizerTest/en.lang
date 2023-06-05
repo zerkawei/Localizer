@@ -1,5 +1,5 @@
 {
-	locale = "en_US",
+	tag = "en_US",
 	strings = [
 		"msg.test": "This is a test",
 		"msg.test2": "This is a second test"
