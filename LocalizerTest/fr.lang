@@ -1,6 +1,0 @@
-{
-	tag = "fr_FR",
-	strings = [
-		"msg.test": "Ceci est un test"
-	]
-}
